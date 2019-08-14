@@ -4,7 +4,7 @@ language: java
 stages:
   - test
   - name: deploy
-    if: branch = master
+    # if: branch = master
 
 jobs:
   fast_finish: true
@@ -19,3 +19,19 @@ jobs:
     - stage: deploy
       name: "Deploy to Jetbrains marketplace"
       os: linux
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-7
+      - g++-7
+
+install:
+  - if [ $TRAVIS_OS_NAME = linux ]; then
+      sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7;
+      sudo pip install conan;
+    else
+      brew install conan;
+    fi
