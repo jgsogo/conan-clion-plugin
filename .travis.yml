@@ -15,6 +15,11 @@ jobs:
       name: "Linux"
       os: linux
       jdk: openjdk8
+      script:
+        - ./gradlew clean build
+        - pwd
+        - ls -la
+        - ls -la $(pwd)/build/distribution
     - name: "Macos"
       os: osx
 
