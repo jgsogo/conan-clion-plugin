@@ -20,7 +20,7 @@ jobs:
         - pwd
         - ls -la
         - ls -la build
-        - ls -la $(pwd)/build/distribution
+        - ls -la $(pwd)/build/distributions
     - name: "Macos"
       os: osx
 
@@ -30,7 +30,7 @@ jobs:
       jdk: openjdk8
       script:
         - ./gradlew clean build
-        - "curl -i --header 'Authorization: Bearer $DEPLOY_TOKEN' -F pluginId=12871 -F file=@build/distribution/Conan-1.1.1.zip -F channel=ci https://plugins.jetbrains.com/plugin/uploadPlugin"
+        - "curl -i --header 'Authorization: Bearer $DEPLOY_TOKEN' -F pluginId=12871 -F file=@$(pwd)/build/distributions/Conan-1.1.1.zip -F channel=ci https://plugins.jetbrains.com/plugin/uploadPlugin"
 
 addons:
   apt:
