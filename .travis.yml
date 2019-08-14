@@ -14,10 +14,7 @@ jobs:
     - stage: test
       name: "Linux"
       os: linux
-      script:
-        - source /opt/jdk_switcher/jdk_switcher.sh
-        - jdk_switcher use openjdk8
-        - ./gradlew check
+      jdk: openjdk8
     - name: "Macos"
       os: osx
 
