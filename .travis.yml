@@ -5,7 +5,7 @@ dist: xenial
 stages:
   - test
   - name: deploy
-    if: branch = master
+    if: tag IS present
 
 jobs:
   fast_finish: true
