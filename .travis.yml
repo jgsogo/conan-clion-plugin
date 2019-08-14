@@ -33,6 +33,8 @@ before_install:
       brew update;
       brew install openssl readline;
       brew outdated pyenv || brew upgrade pyenv;
+    else
+      pyenv update;
     fi
   - pyenv install 3.7.0
   - pyenv global 3.7.0
