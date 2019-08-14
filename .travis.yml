@@ -1,7 +1,35 @@
-os:
-  - osx
-  - linux
+sudo: false
 language: java
+dist: xenial
+
+stages:
+  - test
+  - name: deploy
+    if: branch = master AND tag IS present
+
+jobs:
+  fast_finish: true
+  include:
+
+    - stage: test
+      name: "Linux"
+      os: linux
+      jdk: openjdk8
+    - name: "Macos"
+      os: osx
+
+    - stage: deploy
+      name: "Deploy to Jetbrains marketplace"
+      os: linux
+      jdk: openjdk8
+      script:
+        # Check that the version value match the tag one
+        - var=$(sed -e '/^pluginVersion = */!d; s///;q' gradle.properties)
+        - echo "Value found in gradle.properties=$var, tag is $TRAVIS_TAG"
+        - if [[ $var -ne $TRAVIS_TAG ]]; then exit; fi
+        - ./gradlew clean build
+        - "curl -i --header \"Authorization: Bearer $DEPLOY_TOKEN\" -F pluginId=12871 -F file=@$(pwd)/build/distributions/Conan-1.1.1.zip -F channel=ci https://plugins.jetbrains.com/plugin/uploadPlugin"
+
 addons:
   apt:
     sources:
@@ -9,10 +37,19 @@ addons:
     packages:
       - gcc-7
       - g++-7
+
+before_install:
+  - if [ $TRAVIS_OS_NAME == osx ]; then
+      brew update;
+      brew install openssl readline;
+      brew outdated pyenv || brew upgrade pyenv;
+    fi
+  - pyenv install 3.6.3
+  - pyenv global 3.6.3
+  - python --version
+
 install:
+  - pip install conan
   - if [ $TRAVIS_OS_NAME = linux ]; then
       sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7;
-      sudo pip install conan;
-    else
-      brew install conan;
     fi
