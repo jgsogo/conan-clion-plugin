@@ -1,9 +1,6 @@
 sudo: false
 language: java
 
-jdk:
-  - openjdk8
-
 stages:
   - test
   - name: deploy
@@ -16,6 +13,9 @@ jobs:
     - stage: test
       name: "Linux"
       os: linux
+      script:
+        - jdk_switcher use openjdk8
+        - ./gradlew check
     - name: "Macos"
       os: osx
 
