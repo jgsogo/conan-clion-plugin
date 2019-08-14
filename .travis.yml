@@ -23,6 +23,10 @@ jobs:
       os: linux
       jdk: openjdk8
       script:
+        # Check that the version value match the tag one
+        - var=$(sed -e '/^pluginVersion = */!d; s///;q' gradle.properties)
+        - echo "Value found in gradle.properties=$var, tag is $TRAVIS_TAG"
+        - if [[ $var -ne $TRAVIS_TAG ]]; then exit; fi
         - ./gradlew clean build
         - "curl -i --header \"Authorization: Bearer $DEPLOY_TOKEN\" -F pluginId=12871 -F file=@$(pwd)/build/distributions/Conan-1.1.1.zip -F channel=ci https://plugins.jetbrains.com/plugin/uploadPlugin"
 
