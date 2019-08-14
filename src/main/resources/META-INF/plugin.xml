@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.jfrog.conan.clion</id>
+    <id>jgsogo.conan.clion</id>
     <name>Conan</name>
     <vendor email="https://www.jfrog.com/support-service" url="https://www.jfrog.com">JFrog</vendor>
 

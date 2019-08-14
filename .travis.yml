@@ -23,6 +23,7 @@ jobs:
     - stage: deploy
       name: "Deploy to Jetbrains marketplace"
       os: linux
+      script: curl -i --header "Authorization: Bearer $DEPLOY_TOKEN" -F pluginId=12871 -F file=@build/distribution/Conan-1.1.1.zip -F channel=ci https://plugins.jetbrains.com/plugin/uploadPlugin
 
 addons:
   apt:
