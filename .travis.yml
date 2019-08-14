@@ -19,6 +19,7 @@ jobs:
         - ./gradlew clean build
         - pwd
         - ls -la
+        - ls -la build
         - ls -la $(pwd)/build/distribution
     - name: "Macos"
       os: osx
