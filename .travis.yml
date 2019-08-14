@@ -15,6 +15,7 @@ jobs:
       name: "Linux"
       os: linux
       script:
+        - source $HOME/.jdk_switcher_rc
         - jdk_switcher use openjdk8
         - ./gradlew check
     - name: "Macos"
