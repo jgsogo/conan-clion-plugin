@@ -1,18 +1,21 @@
-os:
-  - osx
-  - linux
+sudo: false
 language: java
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-7
-      - g++-7
-install:
-  - if [ $TRAVIS_OS_NAME = linux ]; then
-      sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7;
-      sudo pip install conan;
-    else
-      brew install conan;
-    fi
+
+stages:
+  - test
+  - name: deploy
+    if: branch = master
+
+jobs:
+  fast_finish: true
+  include:
+
+    - stage: test
+      name: "Linux"
+      os: linux
+    - name: Macos
+      os: osx
+
+    - stage: deploy
+      name: "Deploy to Jetbrains marketplace"
+      os: linux
