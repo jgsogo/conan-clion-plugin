@@ -48,7 +48,7 @@ jobs:
         - "curl -i --header \"Authorization: Bearer $DEPLOY_TOKEN\" -F pluginId=$PLUGIN_ID -F file=@$(pwd)/build/distributions/Conan-$version.zip -F channel=$DEPLOY_CHANNEL https://plugins.jetbrains.com/plugin/uploadPlugin"
         - status="$?"
         - echo "Exit code is $status"
-        - exit "$status"
+        #- exit "$status"
 
 addons:
   apt:
