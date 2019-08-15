@@ -16,10 +16,8 @@ jobs:
     - stage: checks
       name: "Check version"
       addons:
-      before_install:
-        - echo "Skip before_install"
-      install:
-        - echo "Skip install"
+      before_install: true
+      install: true
       script:
         # Check that the version value matches the tag one (right at the very beginning)
         - version=$(sed -e '/^pluginVersion = */!d; s///;q' gradle.properties) || travis_terminate 1;
@@ -47,8 +45,8 @@ jobs:
         - ./gradlew clean build
         - "curl -i --header \"Authorization: Bearer $DEPLOY_TOKEN\" -F pluginId=$PLUGIN_ID -F file=@$(pwd)/build/distributions/Conan-$version.zip -F channel=$DEPLOY_CHANNEL https://plugins.jetbrains.com/plugin/uploadPlugin"
         - status="$?"
-        - echo "Exit code is $status"
-        #- exit "$status"
+        - echo "curl returned $status"
+        - exit "$status"
 
 addons:
   apt:
