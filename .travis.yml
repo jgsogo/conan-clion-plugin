@@ -5,7 +5,7 @@ dist: xenial
 stages:
   - name: checks
     if: tag IS present
-  - test
+  #- test
   - name: deploy
     if: tag IS present
 
@@ -26,20 +26,20 @@ jobs:
         - echo "Value found in gradle.properties=$version, tag is $TRAVIS_TAG"
         - if [ "$version" != "$TRAVIS_TAG" ]; then echo "Version mismatch!"; travis_terminate 1; fi
 
-    - stage: test
-      name: "Linux"
-      os: linux
-      jdk: openjdk8
-    - name: "Macos"
-      os: osx
+    #- stage: test
+    #  name: "Linux"
+    #  os: linux
+    #  jdk: openjdk8
+    #- name: "Macos"
+    #  os: osx
 
     - stage: deploy
       name: "Deploy to Jetbrains marketplace"
       os: linux
       jdk: openjdk8
       env:
-        - DEPLOY_CHANNEL=stable
-        - PLUGIN_ID=11956
+        - DEPLOY_CHANNEL=ci
+        - PLUGIN_ID=12871
       script:
         - version=$(sed -e '/^pluginVersion = */!d; s///;q' gradle.properties) || travis_terminate 1;
         - if [ "$version" != "$TRAVIS_TAG" ]; then echo "Version mismatch!"; travis_terminate 1; fi
